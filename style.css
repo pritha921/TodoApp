@@ -7,7 +7,9 @@
 }
 
 body{
-    background:#78c1f3;
+    /* background:#78c1f3; */
+    background: rgb(238,174,202);
+    background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(205,179,214,1) 31%, rgba(204,179,214,1) 38%, rgba(148,187,233,1) 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
