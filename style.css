@@ -38,7 +38,28 @@ body{
     align-items: center;
     margin-bottom: 20px;
     padding-left: 10px;
+    position: relative;
 }
+
+.button{
+    height:35px;
+    border:none;
+    outline: none;
+    border-radius: 5px;
+    align-items: center;
+    padding:10px;
+    position:absolute;
+    right:0;
+    top:0;
+ }
+
+ .button-text,
+ .button-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+ 
 .fa-pen-to-square{
     align-items: center;
     /* margin-bottom: 20px; */
@@ -114,13 +135,14 @@ ul li{
  }
 
  .button{
-    display: flex;
-    justify-content: flex-end;
+    /* display: flex;
+    justify-content: flex-end; */
     height:35px;
     border:none;
     outline: none;
     border-radius: 5px;
     align-items: center;
+    padding:10px;
  }
 
  .button-text,
