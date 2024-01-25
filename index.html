@@ -16,17 +16,21 @@
             <h2>Todo List</h2>
             <!-- <i class="fa-solid fa-pen-to-square"></i> -->
             <img class="todoIcon" src="assets/todoList.png" alt="todo list">
+            <button type="button" class="button" id="removeAll">
+                <span class="button-text">Delete all</span>
+                <span class="button-icon"><i class="todo-controls fa-solid fa-eraser"></i></span>
+            </button>
         </div>
+        
         <div class="todo-body">
             <input type="text" id="todoText" class="todo-input" placeholder="Add your task here">
-            <!-- <img src="assets/plus.png" alt="add task" id="AddUpdateClick" onclick="CreateToDoData()"> -->
+            <!-- <img src="assets/plus.png" alt="add task" id="addUpdateClick" onclick="createToDoData()"> -->
             <div class="action-button">
-                <i class="fa-solid fa-circle-plus " id="AddUpdateClick" onclick="CreateToDoData()"></i>
+                <i class="fa-solid fa-circle-plus " id="addUpdateClick" onclick="createToDoData()"></i>
             </div>
             
         </div>
         <ul id="list-items" class="list-items">
-
         </ul>
     </div>
     <script src="script.js" type="text/javascript"></script>

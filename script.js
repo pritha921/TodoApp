@@ -1,7 +1,9 @@
 const todoValue = document.getElementById("todoText");
 const listItems = document.getElementById("list-items");
-const addUpdateClick = document.getElementById("AddUpdateClick");
+const addUpdateClick = document.getElementById("addUpdateClick");
 let updateText;
+const removeAllButton = document.getElementById("removeAll");
+removeAllButton.addEventListener("click", removeAllItems);
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -14,7 +16,7 @@ todoValue.addEventListener("keypress", function (e) {
     }
 });
 
-function CreateToDoData() {
+function createToDoData() {
     if (todoValue.value === "") {
         alert("Please enter a task");
         return;
@@ -22,11 +24,11 @@ function CreateToDoData() {
 
     let li = document.createElement("li");
     const taskText = todoValue.value;
-    // const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="UpdateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="DeleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
-    const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div>
+    // const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="updateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="deleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
+    const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div>
                    <div>
-                       <i onclick="UpdateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-                       <i onclick="DeleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+                       <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+                       <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
                    </div>`;
                    
 
@@ -38,36 +40,38 @@ function CreateToDoData() {
     saveTasksToLocalStorage();
 }
 
-function CompleteTodoItems(e) {
+function completeToDoItems(e) {
     if (e && e.style.textDecoration === "") {
-        e.style.textDecoration = "line-through";
+        // e.style.textDecoration = "line-through";
+        createToDoData();
     } else {
-        CreateToDoData();
+        // createToDoData();
+        e.style.textDecoration = "line-through";
     }
 }
 
-function UpdateOnSelectionItems() {
+function updateOnSelectionItems() {
     updateText.innerText = todoValue.value;
     alert("Task updated successfully");
-    addUpdateClick.setAttribute("onclick", "CompleteTodoItems(updateText)");
+    addUpdateClick.setAttribute("onclick", "completeToDoItems(updateText)");
     saveTasksToLocalStorage();
     // addUpdateClick.setAttribute("src", "/assets/plus.png");
     addUpdateClick.className="fa-solid fa-circle-plus"
     todoValue.value = "";
 }
 
-function UpdateToDoItems(e) {
+function updateToDoItems(e) {
     if (e.parentElement.parentElement.querySelector("div").style.textDecoration === "") {
         todoValue.value = e.parentElement.parentElement.querySelector("div").innerText;
         updateText = e.parentElement.parentElement.querySelector("div");
-        addUpdateClick.setAttribute("onclick", "UpdateOnSelectionItems()");
+        addUpdateClick.setAttribute("onclick", "updateOnSelectionItems()");
         // addUpdateClick.setAttribute("src", "/assets/refresh.jpg");
         addUpdateClick.className="fa-solid fa-arrows-rotate"
         
     }
 }
 
-function DeleteToDoItems(e) {
+function deleteToDoItems(e) {
     let listItem = e.closest("li");
     let deleteValue = listItem.querySelector("div").innerText;
 
@@ -75,6 +79,15 @@ function DeleteToDoItems(e) {
         listItem.remove();
 
         
+        saveTasksToLocalStorage();
+    }
+}
+
+function removeAllItems() {
+    if (confirm("Do you want to remove all tasks?")) {
+        while (listItems.firstChild) {
+            listItems.removeChild(listItems.firstChild);
+        }
         saveTasksToLocalStorage();
     }
 }
@@ -90,17 +103,19 @@ function loadTasksFromLocalStorage() {
         const tasks = JSON.parse(savedTasks);
         tasks.forEach((taskText) => {
             let li = document.createElement("li");
-            // const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="UpdateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="DeleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
-            const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div>
+            // const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="updateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="deleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
+            const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div>
             <div>
-                <i onclick="UpdateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-                <i onclick="DeleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+                <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+                <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
             </div>`;
             li.innerHTML = todoItems;
             listItems.appendChild(li);
         });
     }
 }
+
+
 
 
 

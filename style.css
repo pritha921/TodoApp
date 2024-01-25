@@ -112,3 +112,21 @@ ul li{
  .action-button{
     font-size: 30px;
  }
+
+ .button{
+    display: flex;
+    justify-content: flex-end;
+    height:35px;
+    border:none;
+    outline: none;
+    border-radius: 5px;
+    align-items: center;
+ }
+
+ .button-text,
+ .button-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+ 
