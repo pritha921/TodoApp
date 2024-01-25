@@ -6,16 +6,24 @@
     <title>Todo app</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/836b38cfcf.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="todo-header">
             <h2>Todo List</h2>
-            <i class="fa-solid fa-pen-to-square"></i>
+            <!-- <i class="fa-solid fa-pen-to-square"></i> -->
+            <img class="todoIcon" src="assets/todoList.png" alt="todo list">
         </div>
         <div class="todo-body">
             <input type="text" id="todoText" class="todo-input" placeholder="Add your task here">
-            <img src="assets/plus.png" alt="add task" id="AddUpdateClick" onclick="CreateToDoData()">
+            <!-- <img src="assets/plus.png" alt="add task" id="AddUpdateClick" onclick="CreateToDoData()"> -->
+            <div class="action-button">
+                <i class="fa-solid fa-circle-plus " id="AddUpdateClick" onclick="CreateToDoData()"></i>
+            </div>
+            
         </div>
         <ul id="list-items" class="list-items">
 

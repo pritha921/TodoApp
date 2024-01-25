@@ -22,7 +22,13 @@ function CreateToDoData() {
 
     let li = document.createElement("li");
     const taskText = todoValue.value;
-    const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="UpdateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="DeleteToDoItems(this)" src="/assets/delete.png"/></div>`;
+    // const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="UpdateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="DeleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
+    const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div>
+                   <div>
+                       <i onclick="UpdateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+                       <i onclick="DeleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+                   </div>`;
+                   
 
     li.innerHTML = todoItems;
     listItems.appendChild(li);
@@ -45,7 +51,8 @@ function UpdateOnSelectionItems() {
     alert("Task updated successfully");
     addUpdateClick.setAttribute("onclick", "CompleteTodoItems(updateText)");
     saveTasksToLocalStorage();
-    addUpdateClick.setAttribute("src", "/assets/plus.png");
+    // addUpdateClick.setAttribute("src", "/assets/plus.png");
+    addUpdateClick.className="fa-solid fa-circle-plus"
     todoValue.value = "";
 }
 
@@ -54,7 +61,8 @@ function UpdateToDoItems(e) {
         todoValue.value = e.parentElement.parentElement.querySelector("div").innerText;
         updateText = e.parentElement.parentElement.querySelector("div");
         addUpdateClick.setAttribute("onclick", "UpdateOnSelectionItems()");
-        addUpdateClick.setAttribute("src", "/assets/refresh.jpg");
+        // addUpdateClick.setAttribute("src", "/assets/refresh.jpg");
+        addUpdateClick.className="fa-solid fa-arrows-rotate"
         
     }
 }
@@ -82,7 +90,12 @@ function loadTasksFromLocalStorage() {
         const tasks = JSON.parse(savedTasks);
         tasks.forEach((taskText) => {
             let li = document.createElement("li");
-            const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="UpdateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="DeleteToDoItems(this)" src="/assets/delete.png"/></div>`;
+            // const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="UpdateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="DeleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
+            const todoItems = `<div ondblclick="CompleteTodoItems(this)">${taskText}</div>
+            <div>
+                <i onclick="UpdateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+                <i onclick="DeleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+            </div>`;
             li.innerHTML = todoItems;
             listItems.appendChild(li);
         });
