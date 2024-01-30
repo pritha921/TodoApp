@@ -96,7 +96,10 @@ function removeAllItems() {
 }
 
 function saveTasksToLocalStorage() {
-    const tasks = Array.from(listItems.children).map((li) => li.querySelector("div").innerText);
+    const tasks = Array.from(listItems.children).map((li) => {
+        const taskText = li.querySelector("div").innerText;
+        return li.querySelector("div").style.textDecoration === "line-through" ? `<s>${taskText}</s>` : taskText;
+    });
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
