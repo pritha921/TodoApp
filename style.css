@@ -34,10 +34,10 @@ body{
     /* overflow-y: auto; */
 }
 
-.container h2{
+.container h1{
     /* color: #3559E0; */
     color:#38419D;
-    font-weight: 1000;
+    /* font-weight: 1000; */
 }
 
 .todo-header{
@@ -89,6 +89,8 @@ body{
     border-radius: 30px;
     padding:0 20px;
     margin-bottom: 20px;
+    /* background-color: #C4DDFF; */
+    background-color: #DFF6FF;
     
     
 }
@@ -102,6 +104,7 @@ body{
     padding: 20px 20px;
     font-size: 20px;
     color:#041562;
+    
 }
 
 .todo-body img{
@@ -129,7 +132,8 @@ ul li{
 
     align-items: center;
     justify-content: space-between;
-    background: #edeef0;
+    background-color: #DFF6FF;
+    /* background-color: #38419D; */
     margin-bottom: 10px;
     border-radius: 5px;
     color:#041562;
