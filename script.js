@@ -43,25 +43,11 @@ function createToDoData() {
 function completeToDoItems(e) {
     if (e && e.style.textDecoration === "") {
         e.style.textDecoration = "line-through";
-        // createToDoData();
     } else {
         createToDoData();
-        // e.style.textDecoration = "line-through";
     }
 }
 
-// function completeTodoItems(e) {
-//     console.log(e.parentElement);
-//     if (e.style.textDecoration === "") {
-//         e.style.textDecoration = "line-through";
-//     }
-
-//     if (e && e.style.textDecoration === "") {
-//         e.style.textDecoration = "line-through";
-//     } else {
-//         createToDoData();
-//     }
-// }
 
 function updateOnSelectionItems() {
     updateText.innerText = todoValue.value;
