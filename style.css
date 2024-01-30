@@ -35,7 +35,8 @@ body{
 }
 
 .container h2{
-    color: #3559E0;
+    /* color: #3559E0; */
+    color:#38419D;
     font-weight: 1000;
 }
 
@@ -52,6 +53,7 @@ body{
 .action-button{
     font-size: 30px;
     color: #38419D;
+    /* color:#3559E0; */
 }
 
 .button{
@@ -142,7 +144,8 @@ ul li{
 }
 
 .todo-controls.fa-solid.fa-eraser {
-    color: #BF3131;
+    /* color: #BF3131; */
+    color:#265073;
 }
 
 

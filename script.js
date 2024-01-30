@@ -32,6 +32,7 @@ function createToDoData() {
                    </div>`;
                    
 
+
     li.innerHTML = todoItems;
     listItems.appendChild(li);
     todoValue.value = "";
@@ -43,10 +44,13 @@ function createToDoData() {
 function completeToDoItems(e) {
     if (e && e.style.textDecoration === "") {
         e.style.textDecoration = "line-through";
+        saveTasksToLocalStorage();
+        
     } else {
         createToDoData();
     }
 }
+
 
 
 function updateOnSelectionItems() {
