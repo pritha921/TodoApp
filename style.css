@@ -101,6 +101,7 @@ body{
     /* padding:15px 0; */
     padding: 20px 20px;
     font-size: 20px;
+    color:#041562;
 }
 
 .todo-body img{
@@ -111,6 +112,11 @@ body{
     /* background: blue; */
     border-radius: 40px;
 }
+
+::placeholder{
+    color:#38419D;
+ }
+
 ul li{
     list-style: none;
     font-size: 18px;
@@ -126,6 +132,8 @@ ul li{
     background: #edeef0;
     margin-bottom: 10px;
     border-radius: 5px;
+    color:#041562;
+
  }
 
  .todo-controls{
@@ -164,6 +172,10 @@ ul li{
     border-radius: 5px;
     align-items: center;
     padding:10px;
+ }
+
+ .button-text{
+    color:#041562;
  }
 
  .button-text,
