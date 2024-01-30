@@ -34,6 +34,11 @@ body{
     /* overflow-y: auto; */
 }
 
+.container h2{
+    color: #3559E0;
+    font-weight: 1000;
+}
+
 .todo-header{
     display:flex;
     justify-content: center;
@@ -41,6 +46,12 @@ body{
     margin-bottom: 20px;
     padding-left: 10px;
     position: relative;
+    
+}
+
+.action-button{
+    font-size: 30px;
+    color: #38419D;
 }
 
 .button{
@@ -126,14 +137,19 @@ ul li{
 
  }
 
+.todo-controls.fa-regular.fa-pen-to-square {
+    color: #3887BE;
+}
+
+.todo-controls.fa-solid.fa-eraser {
+    color: #BF3131;
+}
+
+
  .list-items{
     flex:1;
     overflow-y: auto;
     padding-inline: 10px;
- }
-
- .action-button{
-    font-size: 30px;
  }
 
  .button{
