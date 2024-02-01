@@ -24,13 +24,15 @@ function createToDoData() {
 
     let li = document.createElement("li");
     const taskText = todoValue.value;
-    // const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="updateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="deleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
-    const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div>
-                   <div>
-                       <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-                       <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
-                   </div>`;
-                   
+    const todoItems=
+    `<div>
+    <input type="checkbox" onchange="completeToDoItems(this)">
+    <span>${taskText}</span>
+    </div>
+    <div>
+        <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+        <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+    </div>`;              
 
 
     li.innerHTML = todoItems;
@@ -41,14 +43,17 @@ function createToDoData() {
     saveTasksToLocalStorage();
 }
 
-function completeToDoItems(e) {
-    if (e && e.style.textDecoration === "") {
-        e.style.textDecoration = "line-through";
-        saveTasksToLocalStorage();
-        
+
+function completeToDoItems(checkbox) {
+    const divElement = checkbox.nextElementSibling;
+
+    if (checkbox.checked) {
+        divElement.style.textDecoration = "line-through";
     } else {
-        createToDoData();
+        divElement.style.textDecoration = "";
     }
+
+    saveTasksToLocalStorage();
 }
 
 
@@ -56,23 +61,22 @@ function completeToDoItems(e) {
 function updateOnSelectionItems() {
     updateText.innerText = todoValue.value;
     alert("Task updated successfully");
-    addUpdateClick.setAttribute("onclick", "completeToDoItems(updateText)");
+    addUpdateClick.onclick = createToDoData; // Reset the event handler
     saveTasksToLocalStorage();
-    // addUpdateClick.setAttribute("src", "/assets/plus.png");
-    addUpdateClick.className="fa-solid fa-circle-plus"
+    addUpdateClick.className = "fa-solid fa-circle-plus";
     todoValue.value = "";
 }
 
+
+
 function updateToDoItems(e) {
-    if (e.parentElement.parentElement.querySelector("div").style.textDecoration === "") {
-        todoValue.value = e.parentElement.parentElement.querySelector("div").innerText;
-        updateText = e.parentElement.parentElement.querySelector("div");
-        addUpdateClick.setAttribute("onclick", "updateOnSelectionItems()");
-        // addUpdateClick.setAttribute("src", "/assets/refresh.jpg");
-        addUpdateClick.className="fa-solid fa-arrows-rotate"
-        
-    }
+    todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
+    updateText = e.parentElement.parentElement.querySelector("div span");
+    addUpdateClick.onclick = updateOnSelectionItems; // Change the event handler
+    addUpdateClick.className = "fa-solid fa-arrows-rotate";
 }
+
+
 
 function deleteToDoItems(e) {
     let listItem = e.closest("li");
@@ -95,33 +99,34 @@ function removeAllItems() {
     }
 }
 
-function saveTasksToLocalStorage() {
-    const tasks = Array.from(listItems.children).map((li) => {
+ function saveTasksToLocalStorage() {
+        const tasks = Array.from(listItems.children).map((li) => {
         const taskText = li.querySelector("div").innerText;
-        return li.querySelector("div").style.textDecoration === "line-through" ? `<s>${taskText}</s>` : taskText;
+        const completed = li.querySelector("input").checked;
+        return { taskText, completed };
     });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+    
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
 
 function loadTasksFromLocalStorage() {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) {
         const tasks = JSON.parse(savedTasks);
-        tasks.forEach((taskText) => {
+        tasks.forEach(({ taskText, completed }) => {
             let li = document.createElement("li");
-            // const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div><div> <img class="edit todo-controls" onclick="updateToDoItems(this)" src="/assets/edit.png"/><img class="delete todo-controls" onclick="deleteToDoItems(this)" <i class="fa-solid fa-trash"/></div>`;
-            const todoItems = `<div ondblclick="completeToDoItems(this)">${taskText}</div>
-            <div>
-                <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-                <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
-            </div>`;
+            const todoItems = `<div ondblclick="completeToDoItems(this)">
+                                <input type="checkbox" onchange="completeToDoItems(this)" ${completed ? 'checked' : ''}>
+                                <span>${completed ? `<s>${taskText}</s>` : taskText}</span>
+                                </div>
+                                <div>
+                                    <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+                                    <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+                                </div>`;
             li.innerHTML = todoItems;
             listItems.appendChild(li);
         });
     }
 }
-
-
-
-
 
