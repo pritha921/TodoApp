@@ -1,16 +1,17 @@
 const todoValue = document.getElementById("todoText");
 const listItems = document.getElementById("list-items");
 const addUpdateClick = document.getElementById("addUpdateClick");
-let updateText;
 const removeAllButton = document.getElementById("removeAll");
 removeAllButton.addEventListener("click", removeAllItems);
 
-
 document.addEventListener("DOMContentLoaded", function () {
-
     loadTasksFromLocalStorage();
+    
+    const drake = dragula([listItems]);
 
-   const sortedItems= dragula([listItems])
+    drake.on('drop', function () {
+        saveTasksToLocalStorage();
+    });
 });
 
 todoValue.addEventListener("keypress", function (e) {
@@ -25,27 +26,13 @@ function createToDoData() {
         return;
     }
 
-    let li = document.createElement("li");
     const taskText = todoValue.value;
-
-    const todoItems=
-    `<div>
-    <input type="checkbox" onchange="completeToDoItems(this)">
-    <span>${taskText}</span>
-    </div>
-    <div>
-        <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-        <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
-    </div>`;    
-
-    li.innerHTML = todoItems;
+    const li = createListItem(taskText, false);
     listItems.appendChild(li);
     todoValue.value = "";
 
-
     saveTasksToLocalStorage();
 }
-
 
 function completeToDoItems(checkbox) {
     const divElement = checkbox.nextElementSibling;
@@ -59,8 +46,6 @@ function completeToDoItems(checkbox) {
     saveTasksToLocalStorage();
 }
 
-
-
 function updateOnSelectionItems() {
     updateText.innerText = todoValue.value;
     alert("Task updated successfully");
@@ -70,8 +55,6 @@ function updateOnSelectionItems() {
     todoValue.value = "";
 }
 
-
-
 function updateToDoItems(e) {
     todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
     updateText = e.parentElement.parentElement.querySelector("div span");
@@ -79,16 +62,12 @@ function updateToDoItems(e) {
     addUpdateClick.className = "fa-solid fa-arrows-rotate";
 }
 
-
-
 function deleteToDoItems(e) {
     let listItem = e.closest("li");
-    let deleteValue = listItem.querySelector("div").innerText;
+    let deleteValue = listItem.querySelector("div span").innerText;
 
     if (confirm(`Do you want to delete this ${deleteValue}?`)) {
         listItem.remove();
-
-        
         saveTasksToLocalStorage();
     }
 }
@@ -102,39 +81,43 @@ function removeAllItems() {
     }
 }
 
- function saveTasksToLocalStorage() {
-        const tasks = Array.from(listItems.children).map((li) => {
-        const taskText = li.querySelector("div").innerText;
+function saveTasksToLocalStorage() {
+    const tasks = Array.from(listItems.children).map(li => {
+        const taskText = li.querySelector("div span").innerText;
         const completed = li.querySelector("input").checked;
         return { taskText, completed };
     });
-    
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
+
+    const tasksData = { tasks };
+    localStorage.setItem("tasksData", JSON.stringify(tasksData));
+}
 
 function loadTasksFromLocalStorage() {
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-        const tasks = JSON.parse(savedTasks);
+    const savedTasksData = localStorage.getItem("tasksData");
+
+    if (savedTasksData) {
+        const { tasks } = JSON.parse(savedTasksData);
+
         tasks.forEach(({ taskText, completed }) => {
-            let li = document.createElement("li");
-            const todoItems = `<div ondblclick="completeToDoItems(this)">
-                                <input type="checkbox" onchange="completeToDoItems(this)" ${completed ? 'checked' : ''}>
-                                <span>${taskText}</span>
-                                </div>
-                                <div>
-                                    <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-                                    <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
-                                </div>`;
-            li.innerHTML = todoItems;
+            const li = createListItem(taskText, completed);
             listItems.appendChild(li);
-            if (completed) {
-                li.querySelector("div span").style.textDecoration = "line-through";
-            }
         });
     }
 }
 
-
-
-
+function createListItem(taskText, completed) {
+    const li = document.createElement("li");
+    const todoItems = `<div ondblclick="completeToDoItems(this)">
+                        <input type="checkbox" onchange="completeToDoItems(this)" ${completed ? 'checked' : ''}>
+                        <span>${taskText}</span>
+                        </div>
+                        <div>
+                            <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
+                            <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+                        </div>`;
+    li.innerHTML = todoItems;
+    if (completed) {
+        li.querySelector("div span").style.textDecoration = "line-through";
+    }
+    return li;
+}
