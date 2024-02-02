@@ -24,6 +24,7 @@ function createToDoData() {
 
     let li = document.createElement("li");
     const taskText = todoValue.value;
+
     const todoItems=
     `<div>
     <input type="checkbox" onchange="completeToDoItems(this)">
@@ -61,7 +62,7 @@ function completeToDoItems(checkbox) {
 function updateOnSelectionItems() {
     updateText.innerText = todoValue.value;
     alert("Task updated successfully");
-    addUpdateClick.onclick = createToDoData; // Reset the event handler
+    addUpdateClick.onclick = createToDoData;
     saveTasksToLocalStorage();
     addUpdateClick.className = "fa-solid fa-circle-plus";
     todoValue.value = "";
@@ -72,7 +73,7 @@ function updateOnSelectionItems() {
 function updateToDoItems(e) {
     todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
     updateText = e.parentElement.parentElement.querySelector("div span");
-    addUpdateClick.onclick = updateOnSelectionItems; // Change the event handler
+    addUpdateClick.onclick = updateOnSelectionItems;
     addUpdateClick.className = "fa-solid fa-arrows-rotate";
 }
 
@@ -109,7 +110,6 @@ function removeAllItems() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }
 
-
 function loadTasksFromLocalStorage() {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) {
@@ -118,7 +118,7 @@ function loadTasksFromLocalStorage() {
             let li = document.createElement("li");
             const todoItems = `<div ondblclick="completeToDoItems(this)">
                                 <input type="checkbox" onchange="completeToDoItems(this)" ${completed ? 'checked' : ''}>
-                                <span>${completed ? `<s>${taskText}</s>` : taskText}</span>
+                                <span>${taskText}</span>
                                 </div>
                                 <div>
                                     <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
@@ -126,7 +126,11 @@ function loadTasksFromLocalStorage() {
                                 </div>`;
             li.innerHTML = todoItems;
             listItems.appendChild(li);
+            if (completed) {
+                li.querySelector("div span").style.textDecoration = "line-through";
+            }
         });
     }
 }
+
 
