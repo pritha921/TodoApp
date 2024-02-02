@@ -7,7 +7,10 @@ removeAllButton.addEventListener("click", removeAllItems);
 
 
 document.addEventListener("DOMContentLoaded", function () {
+
     loadTasksFromLocalStorage();
+
+   const sortedItems= dragula([listItems])
 });
 
 todoValue.addEventListener("keypress", function (e) {
@@ -33,8 +36,7 @@ function createToDoData() {
     <div>
         <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
         <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
-    </div>`;              
-
+    </div>`;    
 
     li.innerHTML = todoItems;
     listItems.appendChild(li);
@@ -132,5 +134,7 @@ function loadTasksFromLocalStorage() {
         });
     }
 }
+
+
 
 
