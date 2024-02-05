@@ -3,6 +3,7 @@ const listItems = document.getElementById("list-items");
 const addUpdateClick = document.getElementById("addUpdateClick");
 const removeAllButton = document.getElementById("removeAll");
 removeAllButton.addEventListener("click", removeAllItems);
+let updateText;
 
 document.addEventListener("DOMContentLoaded", function () {
     loadTasksFromLocalStorage();
@@ -45,22 +46,55 @@ function completeToDoItems(checkbox) {
 
     saveTasksToLocalStorage();
 }
+//--------------------------------------------------------------------------------------------------------------------------------
+// function updateOnSelectionItems() {
+//     updateText.innerText = todoValue.value;
+//     alert("Task updated successfully");
+//     addUpdateClick.onclick = createToDoData;
+//     saveTasksToLocalStorage();
+//     addUpdateClick.className = "fa-solid fa-circle-plus";
+//     todoValue.value = "";
+// }
+
+// function updateToDoItems(e) {
+//     todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
+//     updateText = e.parentElement.parentElement.querySelector("div span");
+//     addUpdateClick.onclick = updateOnSelectionItems;
+//     addUpdateClick.className = "fa-solid fa-arrows-rotate";
+// }
+//----------------------------------------------------------------------------------------------------------------------------------
+
+function findParentListItem(element) {
+    let parent = element.parentElement;
+    while (parent && parent.tagName !== "LI") {
+        parent = parent.parentElement;
+    }
+    return parent;
+}
+
+function updateToDoItems(e) {
+    const listItem = e.closest("li");
+    listItem.classList.add("editing");
+    todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
+    updateText = e.parentElement.parentElement.querySelector("div span");
+    addUpdateClick.onclick = updateOnSelectionItems;
+    addUpdateClick.className = "fa-solid fa-arrows-rotate";
+}
 
 function updateOnSelectionItems() {
     updateText.innerText = todoValue.value;
     alert("Task updated successfully");
+
+    const listItem = findParentListItem(updateText);
+    listItem.classList.remove("editing");
+
     addUpdateClick.onclick = createToDoData;
     saveTasksToLocalStorage();
     addUpdateClick.className = "fa-solid fa-circle-plus";
     todoValue.value = "";
 }
 
-function updateToDoItems(e) {
-    todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
-    updateText = e.parentElement.parentElement.querySelector("div span");
-    addUpdateClick.onclick = updateOnSelectionItems;
-    addUpdateClick.className = "fa-solid fa-arrows-rotate";
-}
+
 
 function deleteToDoItems(e) {
     let listItem = e.closest("li");
@@ -72,10 +106,14 @@ function deleteToDoItems(e) {
     }
 }
 
+
 function removeAllItems() {
     if (confirm("Do you want to remove all tasks?")) {
         while (listItems.firstChild) {
             listItems.removeChild(listItems.firstChild);
+            addUpdateClick.className = "fa-solid fa-circle-plus";
+            todoValue.value = "";
+            
         }
         saveTasksToLocalStorage();
     }
