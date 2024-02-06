@@ -35,34 +35,25 @@ function createToDoData() {
     saveTasksToLocalStorage();
 }
 
-function completeToDoItems(checkbox) {
-    const divElement = checkbox.nextElementSibling;
 
-    if (checkbox.checked) {
-        divElement.style.textDecoration = "line-through";
-    } else {
-        divElement.style.textDecoration = "";
+function completeToDoItems(element) {
+    const listItem = findParentListItem(element);
+
+
+    if (listItem && listItem.classList.contains("editing")) {
+        return;
     }
 
-    saveTasksToLocalStorage();
-}
-//--------------------------------------------------------------------------------------------------------------------------------
-// function updateOnSelectionItems() {
-//     updateText.innerText = todoValue.value;
-//     alert("Task updated successfully");
-//     addUpdateClick.onclick = createToDoData;
-//     saveTasksToLocalStorage();
-//     addUpdateClick.className = "fa-solid fa-circle-plus";
-//     todoValue.value = "";
-// }
+    if (listItem) {
+        const checkbox = listItem.querySelector("input");
+        const divElement = listItem.querySelector("div");
 
-// function updateToDoItems(e) {
-//     todoValue.value = e.parentElement.parentElement.querySelector("div span").innerText;
-//     updateText = e.parentElement.parentElement.querySelector("div span");
-//     addUpdateClick.onclick = updateOnSelectionItems;
-//     addUpdateClick.className = "fa-solid fa-arrows-rotate";
-// }
-//----------------------------------------------------------------------------------------------------------------------------------
+        checkbox.checked = !checkbox.checked;
+        divElement.style.textDecoration = checkbox.checked ? "line-through" : "";
+
+        saveTasksToLocalStorage();
+    }
+}
 
 function findParentListItem(element) {
     let parent = element.parentElement;
@@ -94,8 +85,7 @@ function updateOnSelectionItems() {
     todoValue.value = "";
 }
 
-
-
+// --------------------------------------------------------------------------------------
 function deleteToDoItems(e) {
     let listItem = e.closest("li");
     let deleteValue = listItem.querySelector("div span").innerText;
@@ -105,7 +95,7 @@ function deleteToDoItems(e) {
         saveTasksToLocalStorage();
     }
 }
-
+//---------------------------------------------------------------------------------------
 
 function removeAllItems() {
     if (confirm("Do you want to remove all tasks?")) {
@@ -129,7 +119,7 @@ function saveTasksToLocalStorage() {
     const tasksData = { tasks };
     localStorage.setItem("tasksData", JSON.stringify(tasksData));
 }
-
+  
 function loadTasksFromLocalStorage() {
     const savedTasksData = localStorage.getItem("tasksData");
 
@@ -145,17 +135,33 @@ function loadTasksFromLocalStorage() {
 
 function createListItem(taskText, completed) {
     const li = document.createElement("li");
-    const todoItems = `<div ondblclick="completeToDoItems(this)">
+    const todoItems = `<div>
                         <input type="checkbox" onchange="completeToDoItems(this)" ${completed ? 'checked' : ''}>
                         <span>${taskText}</span>
                         </div>
                         <div>
                             <i onclick="updateToDoItems(this)" class="todo-controls fa-regular fa-pen-to-square"></i>
-                            <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser"></i>
+                            <i onclick="deleteToDoItems(this)" class="todo-controls fa-solid fa-eraser disabled"></i>
                         </div>`;
+
     li.innerHTML = todoItems;
+
+    const checkbox = li.querySelector("input");
+    const divElement = li.querySelector("div");
+
     if (completed) {
-        li.querySelector("div span").style.textDecoration = "line-through";
+        checkbox.checked = true;
+        divElement.style.textDecoration = "line-through";
     }
+
+    li.addEventListener("click", function(event) {
+        if (!event.target.matches('.todo-controls')) {
+            completeToDoItems(li.querySelector("input"));
+        }
+    });
+
     return li;
 }
+
+
+
